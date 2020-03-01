@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <title>Shopping Cart</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
+   <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+   <section>
+      <div class="container">
+         <div class="cart">
+            <div class="col-md-12 col-lg-10 mx-auto">
+               <div class="cart-item">
+                  <div class="row">
+                     <div class="col-md-7 center-item">
+                        <img src="images/product-1.png" alt="">
+                        <h5>iPhone 11 128GB Black</h5>
+                     </div>
+
+                     <div class="col-md-5 center-item">
+                        <div class="input-group number-spinner">
+                           <button id="mobile-minusBtn" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="mobile-input" type="text" class="form-control text-center" value="1">
+                           <button id="mobile-plusBtn" class="btn btn-default"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <h5>$<span id="mobile-cost">1219</span></h5>
+                        <img src="images/remove.png" alt="" class="remove-item">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="cart-item">
+                  <div class="row">
+                     <div class="col-md-7 center-item mx-auto">
+                        <img src="images/product-2.png" alt="">
+                        <h5>iPhone 11 Silicone Case - Black</h5>
+                     </div>
+                     <div class="col-md-5 center-item">
+                        <div class="input-group number-spinner">
+                           <button id="cover-minusBtn" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="cover-input" type="text" class="form-control text-center" value="1">
+                           <button id="cover-plusBtn" class="btn btn-default"><i class="fas fa-plus"></i></button>
+
+                        </div>
+                        <h5>$<span id="cover-cost">59</span></h5>
+                        <img src="images/remove.png" alt="" class="remove-item">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="cart-item">
+                  <div class="row">
+
+                     <div class="col-md-8">
+                        <h5>Subtotal: </h5>
+                        <h5>Tax(15%):</h5>
+                        <h5>Total:</h5>
+                     </div>
+
+                     <div class="col-md-4 status">
+                        <h5>$<span id="subtotal">1278</span></h5>
+                        <h5>$<span id="tax">191.7</span></h5>
+                        <h5>$<span id="total">1469.7</span></h5>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12 pt-4 pb-4">
+                  <button type="button" class="btn btn-success check-out">Check Out</button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+
+
+   <script>
+         const mobile = parseFloat(document.getElementById("mobile-cost").innerText);
+         const cover = parseFloat(document.getElementById("cover-cost").innerText);
+
+         //mobile plus button event handler
+         const mobilePlusBtn = document.getElementById('mobile-plusBtn');
+         mobilePlusBtn.addEventListener('click', function () {
+            add('mobile-input');
+            // document.getElementById("mobile-cost").innerText = getAmount("mobile-cost") + mobile;
+            // document.getElementById("mobile-cost").innerText = parseFloat(document.getElementById('mobile-input').value)*1219;
+            costAmount(1219, "mobile-cost", "mobile-input");
+            cartAmount();
+         });
+
+         //mobile minus button event handler
+         const mobileMinusBtn = document.getElementById('mobile-minusBtn');
+         mobileMinusBtn.addEventListener('click', function () {
+            minus('mobile-input');
+            if(getAmount("mobile-cost")>mobile){
+               costAmount(1219, "mobile-cost", "mobile-input");
+               cartAmount();
+            }
+         });
+
+         //cover plus button event handler
+         const coverPlusBtn = document.getElementById('cover-plusBtn');
+         coverPlusBtn.addEventListener('click', function () {
+            add('cover-input');
+            costAmount(59, "cover-cost", "cover-input");
+            cartAmount();
+         });
+
+         //cover minus button event handler
+         const coverMinusBtn = document.getElementById('cover-minusBtn');
+         coverMinusBtn.addEventListener('click', function () {
+            minus('cover-input');
+            if (getAmount("cover-cost") > cover) {
+               costAmount(59, "cover-cost", "cover-input");
+               cartAmount();
+            }
+         });
+
+
+
+         function getAmount(id) {
+            const mobileCost = document.getElementById(id).innerText;
+            const mobileCostNumber = parseFloat(mobileCost);
+            return mobileCostNumber;
+         };
+         function add(id) {
+               const currentQuantity = document.getElementById(id).value;
+               const currentQuantityNumber = parseFloat(currentQuantity);
+               const totalQuantity = currentQuantityNumber + 1;
+               document.getElementById(id).value = totalQuantity;
+         };
+         function minus(id) {
+            const currentQuantity = document.getElementById(id).value;
+            const currentQuantityNumber = parseFloat(currentQuantity);
+            if (currentQuantityNumber > 1) {
+               const totalQuantity = currentQuantityNumber - 1;
+               document.getElementById(id).value = totalQuantity;
+            };
+         };
+         function cartAmount() {
+            document.getElementById("subtotal").innerText = getAmount("mobile-cost") + getAmount("cover-cost");
+            document.getElementById("tax").innerText = (getAmount("subtotal") * 0.15).toFixed(2);
+            document.getElementById("total").innerText = getAmount("subtotal") + getAmount("tax");
+         };
+         function costAmount(cost,deviceCost,deviceInput) {
+            document.getElementById(deviceCost).innerText = parseFloat(document.getElementById(deviceInput).value) * cost;
+         }
+
+   </script>
+</body>
+
+</html>
